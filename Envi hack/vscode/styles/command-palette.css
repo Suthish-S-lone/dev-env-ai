@@ -1,0 +1,135 @@
+/* Command Palette Overlay */
+.command-palette-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    /* Transparent initially, maybe slight dim */
+    z-index: 9000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 6px;
+}
+
+.command-palette-container {
+    width: 600px;
+    max-width: 90%;
+    background-color: #252526;
+    /* VS Code Quick Input Background */
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.45);
+    border-radius: 0;
+    /* VS Code sharp corners */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.command-input-wrapper {
+    background-color: #252526;
+    padding: 6px;
+    position: relative;
+}
+
+.command-input {
+    width: 100%;
+    background-color: #3C3C3C;
+    /* VS Code Input Background */
+    color: #CCCCCC;
+    /* VS Code Input Foreground */
+    border: 1px solid #3C3C3C;
+    padding: 4px 6px;
+    font-size: 13px;
+    outline: none;
+    line-height: 18px;
+    box-sizing: border-box;
+}
+
+.command-input:focus {
+    border-color: #007FD4;
+    /* VS Code Focus Border */
+}
+
+.command-list {
+    max-height: 380px;
+    overflow-y: auto;
+    padding-top: 0;
+}
+
+/* Scrollbar styling */
+.command-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.command-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.command-list::-webkit-scrollbar-thumb {
+    background: #424242;
+}
+
+.command-list::-webkit-scrollbar-thumb:hover {
+    background: #4F4F4F;
+}
+
+.command-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 12px;
+    font-size: 13px;
+    color: #CCCCCC;
+    cursor: pointer;
+    line-height: 22px;
+}
+
+.command-item.active,
+.command-item:hover {
+    background-color: #04395E;
+    /* VS Code List Active Background */
+    color: #FFFFFF;
+}
+
+.command-label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.command-shortcut {
+    color: #858585;
+    /* VS Code Description Foreground */
+    font-size: 12px;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.command-item.active .command-shortcut {
+    color: #E7E7E7;
+}
+
+/* Category separator header */
+.command-separator {
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #E7E7E7;
+    background-color: #333333;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Text highlighting for search matches */
+.highlight {
+    font-weight: bold;
+    color: #0097FB;
+    /* VS Code Highlight color */
+}
+
+.command-item.active .highlight {
+    color: #FFFFFF;
+}

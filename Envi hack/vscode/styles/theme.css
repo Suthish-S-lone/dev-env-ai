@@ -1,0 +1,107 @@
+:root {
+    /* VS Code Dark+ Theme Colors */
+    
+    /* Main background colors */
+    --background: #1e1e1e;
+    --editor-background: #1e1e1e;
+    --sidebar-background: #252526;
+    --panel-background: #1e1e1e;
+    --activity-bar-background: #333333;
+    
+    /* Text colors */
+    --text-primary: #cccccc;
+    --text-secondary: #858585;
+    --text-disabled: #3c3c3c;
+    --text-link: #3794ff;
+    
+    /* Border colors */
+    --border: #3c3c3c;
+    --panel-border: #3c3c3c;
+    --input-border: #3c3c3c;
+    --focus-border: #007fd4;
+    
+    /* Titlebar */
+    --titlebar-background: #3c3c3c;
+    --titlebar-foreground: #cccccc;
+    --titlebar-inactiveForeground: #858585;
+    
+    /* Menu */
+    --menu-background: #252526;
+    --menu-foreground: #cccccc;
+    --menu-selectionBackground: #094771;
+    --menu-selectionForeground: #ffffff;
+    --menu-separatorBackground: #3c3c3c;
+    
+    /* Button */
+    --button-background: #0e639c;
+    --button-foreground: #ffffff;
+    --button-hoverBackground: #1177bb;
+    --button-border: #0e639c;
+    
+    /* Input */
+    --input-background: #3c3c3c;
+    --input-foreground: #cccccc;
+    
+    /* Scrollbar */
+    --scrollbar-background: #1e1e1e;
+    --scrollbar-sliderBackground: #424242;
+    --scrollbar-sliderHoverBackground: #4a4a4a;
+    
+    /* Status bar */
+    --statusbar-background: #007acc;
+    --statusbar-foreground: #ffffff;
+    
+    /* Activity bar */
+    --activity-bar-foreground: #cccccc;
+    --activity-bar-inactiveForeground: #858585;
+    --activity-bar-activeBorder: #ffffff;
+    --activity-bar-badgeBackground: #007acc;
+    --activity-bar-badgeForeground: #ffffff;
+    
+    /* Sidebar */
+    --sidebar-foreground: #cccccc;
+    --sidebar-background: #252526;
+    
+    /* Panel */
+    --panel-tab-background: #1e1e1e;
+    --panel-tab-activeBackground: #252526;
+    --panel-tab-hoverBackground: #2a2d2e;
+    --panel-tab-activeForeground: #ffffff;
+    --panel-tab-inactiveForeground: #858585;
+    --panel-tab-activeBorder: #007acc;
+    
+    /* Editor */
+    --editor-lineHighlightBackground: #2a2d2e;
+    --editor-lineNumber-foreground: #858585;
+    --editor-selectionBackground: #264f78;
+    --editor-inactiveSelectionBackground: #3a3d41;
+    
+    /* Tree/List */
+    --list-activeSelectionBackground: #094771;
+    --list-activeSelectionForeground: #ffffff;
+    --list-hoverBackground: #2a2d2e;
+    --list-focusBackground: #062f4a;
+    
+    /* Tab */
+    --tab-activeBackground: #1e1e1e;
+    --tab-inactiveBackground: #2d2d2d;
+    --tab-activeForeground: #ffffff;
+    --tab-inactiveForeground: #858585;
+    --tab-border: #252526;
+    --tab-activeBorder: #007acc;
+    
+    /* Badge */
+    --badge-background: #4d4d4d;
+    --badge-foreground: #ffffff;
+    
+    /* Description */
+    --descriptionForeground: #a0a0a0;
+    
+    /* Disabled */
+    --disabledForeground: #3c3c3c;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-primary);
+}

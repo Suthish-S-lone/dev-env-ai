@@ -1,0 +1,440 @@
+/* Activity Bar */
+.activity-bar {
+    width: 48px;
+    background: var(--activity-bar-background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    border-right: 1px solid var(--border);
+    z-index: 10;
+}
+
+.activity-bar-item {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--activity-bar-inactiveForeground);
+    position: relative;
+    transition: color 0.2s;
+}
+
+.activity-bar-item:hover {
+    color: var(--activity-bar-foreground);
+}
+
+.activity-bar-item.active {
+    color: var(--activity-bar-foreground);
+}
+
+.activity-bar-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--activity-bar-activeBorder);
+}
+
+.activity-bar-item i {
+    font-size: 20px;
+}
+
+.activity-bar-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background: var(--sidebar-background);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: width 0.2s;
+}
+
+.sidebar.collapsed {
+    width: 0;
+    border-right: none;
+}
+
+/* Sidebar Panels */
+/* Sidebar Panels */
+.sidebar-panels {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+    /* Critical for nested flex scrolling */
+}
+
+.sidebar-panel {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    /* Changed from height: 100% */
+    overflow: hidden;
+    min-height: 0;
+    /* Critical for nested flex scrolling */
+}
+
+.sidebar-panel.active {
+    display: flex;
+}
+
+.panel-header {
+    height: 35px;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-tab-background);
+    user-select: none;
+    flex-shrink: 0;
+    /* Don't shrink header */
+}
+
+/* ... existing styles ... */
+
+.panel-content {
+    flex: 1;
+    overflow-y: scroll !important;
+    /* Force scrollbar */
+    overflow-x: hidden;
+    min-height: 0;
+    /* Critical for nested flex scrolling */
+}
+
+/* Custom Scrollbar for Panel Content to ensure visibility */
+.panel-content::-webkit-scrollbar {
+    width: 10px;
+    background-color: #252526;
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+    background-color: #424242;
+    border-radius: 5px;
+    border: 2px solid #252526;
+}
+
+.panel-content::-webkit-scrollbar-thumb:hover {
+    background-color: #4f4f4f;
+}
+
+.panel-content::-webkit-scrollbar-track {
+    background-color: #252526;
+}
+
+/* File Explorer */
+.file-explorer {
+    padding: 5px 0;
+}
+
+.file-tree {
+    list-style: none;
+}
+
+.file-tree-item {
+    user-select: none;
+}
+
+.file-tree-content {
+    display: flex;
+    align-items: center;
+    padding: 2px 10px;
+    cursor: pointer;
+    height: 22px;
+    font-size: 13px;
+}
+
+.file-tree-content:hover {
+    background: var(--list-hoverBackground);
+}
+
+.file-tree-content.selected {
+    background: var(--list-activeSelectionBackground);
+    color: var(--list-activeSelectionForeground);
+}
+
+.file-tree-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+.file-tree-icon i {
+    font-size: 14px;
+}
+
+.file-tree-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-tree-children {
+    padding-left: 16px;
+    display: none;
+}
+
+.file-tree-children.expanded {
+    display: block;
+}
+
+.file-tree-toggle {
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.file-tree-toggle i {
+    font-size: 10px;
+    transition: transform 0.2s;
+}
+
+.file-tree-item.expanded>.file-tree-content>.file-tree-toggle i {
+    transform: rotate(90deg);
+}
+
+/* File type icons */
+.file-tree-icon.folder i {
+    color: #7cb7ff;
+}
+
+.file-tree-icon.file.html i {
+    color: #e34c26;
+}
+
+.file-tree-icon.file.css i {
+    color: #1572b6;
+}
+
+.file-tree-icon.file.js i {
+    color: #f7df1e;
+}
+
+.file-tree-icon.file.json i {
+    color: #f7df1e;
+}
+
+.file-tree-icon.file.md i {
+    color: #757575;
+}
+
+/* Explorer Panel Styles */
+.panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #cccccc;
+    border-bottom: 1px solid #3e3e42;
+    background-color: #2d2d30;
+}
+
+.explorer-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.explorer-btn {
+    background: none;
+    border: none;
+    color: #cccccc;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.explorer-btn:hover {
+    background-color: #3e3e42;
+    color: #ffffff;
+}
+
+.explorer-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* .panel-content handled by flex above */
+
+.file-explorer-container {
+    padding: 5px 0;
+}
+
+.file-tree {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-tree-item {
+    padding: 0;
+    margin: 0;
+}
+
+.file-tree-content {
+    display: flex;
+    align-items: center;
+    padding: 3px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.file-tree-content:hover {
+    background-color: #2a2d2e;
+}
+
+.file-tree-content.selected {
+    background-color: #094771;
+}
+
+.file-tree-toggle {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #858585;
+    font-size: 10px;
+}
+
+.file-tree-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.file-tree-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    color: #cccccc;
+}
+
+.file-tree-children {
+    display: none;
+}
+
+.file-tree-item.expanded .file-tree-children {
+    display: block;
+}
+
+/* Open Editors Styles */
+.open-editor-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.open-editor-item:hover {
+    background-color: #2a2d2e;
+}
+
+.open-editor-item i.fa-times {
+    visibility: hidden;
+}
+
+.open-editor-item:hover i.fa-times {
+    visibility: visible;
+}
+
+/* Context Menu Styles */
+.context-menu {
+    position: fixed;
+    background-color: #2d2d30;
+    border: 1px solid #454545;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 180px;
+    padding: 4px 0;
+}
+
+.context-menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    color: #cccccc;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.context-menu-item:hover {
+    background-color: #094771;
+}
+
+.context-menu-shortcut {
+    color: #858585;
+    font-size: 12px;
+    margin-left: 16px;
+}
+
+.context-menu-separator {
+    height: 1px;
+    background-color: #454545;
+    margin: 4px 0;
+}
+
+/* Panel Item Styles */
+.panel-item {
+    padding: 6px 15px;
+    cursor: pointer;
+    color: #cccccc;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.panel-item:hover {
+    background-color: #2a2d2e;
+}
+
+.panel-item i {
+    margin-right: 8px;
+    font-size: 12px;
+    color: #858585;
+}

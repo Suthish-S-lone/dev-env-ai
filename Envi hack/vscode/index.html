@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/theme.css">
+    <link rel="stylesheet" href="styles/titlebar.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/tabs.css">
+    <link rel="stylesheet" href="styles/statusbar.css">
+    <link rel="stylesheet" href="styles/context-menu.css">
+
+    <!-- Monaco Editor CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css">
+
+    <!-- Xterm CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Fix CSS -->
+    <!-- Command Palette CSS -->
+    <link rel="stylesheet" href="styles/command-palette.css">
+
+    <style>
+        /* Ensure panels work properly */
+        .sidebar-panel {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .sidebar-panel.active {
+            display: flex;
+        }
+
+        .sidebar {
+            display: flex;
+            width: 300px;
+        }
+
+        /* Panel action button */
+        .panel-action-btn {
+            background-color: #0e639c;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            border: none;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .panel-action-btn:hover {
+            background-color: #1177bb;
+        }
+
+        /* Panel items */
+        .panel-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 10px;
+            margin-bottom: 2px;
+            border-radius: 3px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .panel-item:hover {
+            background-color: var(--list-hoverBackground);
+        }
+
+        .panel-item i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Extension items */
+        .extension-item {
+            padding: 8px;
+            border-radius: 3px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background-color: var(--list-inactiveSelectionBackground);
+        }
+
+        .extension-item:hover {
+            background-color: var(--list-hoverBackground);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 35px;
+            padding: 0 15px;
+            background-color: var(--panel-tab-background);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--panel-title-activeForeground);
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .panel-action {
+            background: transparent;
+            border: none;
+            color: var(--panel-title-inactiveForeground);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 3px;
+        }
+
+        .panel-action:hover {
+            background-color: var(--button-hoverBackground);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Custom Titlebar -->
+    <div class="titlebar">
+        <div class="titlebar-drag-region"></div>
+        <div class="window-title">Code Editor</div>
+        <div class="window-controls">
+            <button class="window-control" id="minimize-btn" title="Minimize">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="window-control" id="maximize-btn" title="Maximize">
+                <i class="far fa-square"></i>
+            </button>
+            <button class="window-control close" id="close-btn" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Menu Bar -->
+    <div class="menubar">
+        <div class="menubar-left">
+            <div class="menu-item" data-menu="file">File</div>
+            <div class="menu-item" data-menu="edit">Edit</div>
+            <div class="menu-item" data-menu="selection">Selection</div>
+            <div class="menu-item" data-menu="view">View</div>
+            <div class="menu-item" data-menu="go">Go</div>
+            <div class="menu-item" data-menu="run">Run</div>
+            <div class="menu-item" data-menu="terminal">Terminal</div>
+            <div class="menu-item" data-menu="help">Help</div>
+        </div>
+        <div class="menubar-right">
+            <button class="menubar-btn run-btn" id="run-btn" title="Run Code (Ctrl+Alt+N)">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="menubar-btn" id="accounts-btn" data-view="accounts" title="Accounts">
+                <i class="fas fa-user-circle"></i>
+            </button>
+            <button class="menubar-btn" id="settings-btn" data-view="settings" title="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Menu Dropdowns (hidden by default) -->
+    <div class="menu-dropdown" id="file-menu">
+        <!-- File menu content will be loaded here -->
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Activity Bar -->
+        <div class="activity-bar">
+            <div class="activity-bar-item active" id="explorer-btn" data-view="explorer"
+                title="Explorer (Ctrl+Shift+E)">
+                <i class="fas fa-folder"></i>
+            </div>
+            <div class="activity-bar-item" id="search-btn" data-view="search" title="Search (Ctrl+Shift+F)">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="activity-bar-item" id="source-control-btn" data-view="git"
+                title="Source Control (Ctrl+Shift+G)">
+                <i class="fas fa-code-branch"></i>
+            </div>
+            <div class="activity-bar-item" id="run-debug-btn" data-view="debug" title="Run and Debug (Ctrl+Shift+D)">
+                <i class="fas fa-play"></i>
+            </div>
+            <div class="activity-bar-item" id="extensions-btn" data-view="extensions" title="Extensions (Ctrl+Shift+X)">
+                <i class="fas fa-puzzle-piece"></i>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <!-- Sidebar Panels -->
+            <div class="sidebar-panels">
+                <div class="sidebar-panel active" id="explorer-panel">
+                    <!-- Explorer content will be rendered by explorer.js -->
+                </div>
+
+                <div class="sidebar-panel" id="search-panel" style="display: none;">
+                    <!-- Search content will be rendered by sidebar.js -->
+                </div>
+
+                <div class="sidebar-panel" id="source-control-panel" style="display: none;">
+                    <!-- Source control content will be rendered by sidebar.js -->
+                </div>
+
+                <div class="sidebar-panel" id="run-debug-panel" style="display: none;">
+                    <!-- Run and debug content will be rendered by sidebar.js -->
+                </div>
+
+                <div class="sidebar-panel" id="extensions-panel" style="display: none;">
+                    <!-- Extensions content will be rendered by sidebar.js -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor Area -->
+        <div class="editor-area">
+            <!-- Editor Tabs -->
+            <div class="editor-tabs" id="editor-tabs">
+                <!-- Tabs will be created dynamically -->
+                <div class="tab-placeholder">No files open</div>
+            </div>
+
+            <!-- Editor Container -->
+            <div class="editor-container" id="editor-container">
+                <!-- Monaco Editor will be loaded here -->
+                <div class="editor-empty-state">
+                    <h2>Code Editor</h2>
+                    <p>Open a file or folder to start editing</p>
+                    <div class="editor-actions">
+                        <button class="editor-action-btn" id="open-file-action">
+                            <i class="fas fa-folder-open"></i> Open File
+                        </button>
+                        <button class="editor-action-btn" id="open-folder-action">
+                            <i class="fas fa-folder"></i> Open Folder
+                        </button>
+                        <button class="editor-action-btn" id="new-file-action">
+                            <i class="fas fa-file"></i> New File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel (Terminal, Problems, Output, Debug Console) -->
+    <div class="panel" id="bottom-panel">
+        <div class="panel-tabs">
+            <div class="panel-tab active" data-panel="terminal">TERMINAL</div>
+            <div class="panel-tab" data-panel="problems">PROBLEMS</div>
+            <div class="panel-tab" data-panel="output">OUTPUT</div>
+            <div class="panel-tab" data-panel="debug-console">DEBUG CONSOLE</div>
+            <div class="panel-tab" data-panel="ports">PORTS</div>
+        </div>
+        <div class="panel-content">
+            <!-- Terminal -->
+            <div class="panel-view active" id="terminal-view">
+                <div class="terminal-container" id="terminal-container"></div>
+            </div>
+
+            <!-- Problems -->
+            <div class="panel-view" id="problems-view">
+                <div class="problems-container">
+                    <p>No problems have been detected in the workspace.</p>
+                </div>
+            </div>
+
+            <!-- Output -->
+            <div class="panel-view" id="output-view">
+                <div class="output-container">
+                    <p>Output will appear here</p>
+                </div>
+            </div>
+
+            <!-- Debug Console -->
+            <div class="panel-view" id="debug-console-view">
+                <div class="debug-console-container">
+                    <p>Debug console will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="statusbar">
+        <div class="statusbar-left">
+            <span class="statusbar-item" id="current-branch">
+                <i class="fas fa-code-branch"></i> main
+            </span>
+            <span class="statusbar-item" id="error-count">
+                <i class="fas fa-times-circle"></i> 0
+            </span>
+            <span class="statusbar-item" id="warning-count">
+                <i class="fas fa-exclamation-triangle"></i> 0
+            </span>
+        </div>
+        <div class="statusbar-right">
+            <span class="statusbar-item" id="line-col">
+                Ln 1, Col 1
+            </span>
+            <span class="statusbar-item" id="file-type">
+                Plain Text
+            </span>
+            <span class="statusbar-item" id="encoding">
+                UTF-8
+            </span>
+            <span class="statusbar-item" id="eol">
+                LF
+            </span>
+            <span class="statusbar-item" id="indent">
+                Spaces: 4
+            </span>
+        </div>
+    </div>
+
+    <!-- Input Modal -->
+    <div id="input-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modal-title">Enter Value</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="modal-input" class="modal-input" placeholder="Enter name...">
+            </div>
+            <div class="modal-footer">
+                <button id="modal-ok" class="modal-btn primary">OK</button>
+                <button id="modal-cancel" class="modal-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="context-menu"></div>
+
+    <!-- Command Palette Overlay -->
+    <div id="command-palette-overlay" class="command-palette-overlay" style="display: none;">
+        <div class="command-palette-container">
+            <div class="command-input-wrapper">
+                <input type="text" id="command-palette-input" class="command-input" placeholder="> Type a command...">
+            </div>
+            <div id="command-palette-list" class="command-list">
+                <!-- Commands injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="ui/titlebar.js"></script>
+    <script src="ui/menu.js"></script>
+    <script src="ui/sidebar.js"></script>
+    <script src="ui/explorer.js"></script>
+    <script src="ui/tabs.js"></script>
+    <script src="ui/statusbar.js"></script>
+    <script src="ui/command-palette.js"></script> <!-- Added -->
+    <script src="editor/monaco-setup.js"></script>
+    <script src="editor/editor-manager.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+    <script src="terminal/xterm-setup.js"></script>
+    <script src="utils/drag-drop.js"></script>
+    <script src="utils/file-ops.js"></script>
+    <script src="utils/ipc-handler.js"></script>
+    <script src="utils/shortcuts.js"></script>
+    <script src="renderer.js"></script>
+
+    <!-- Added: Project Data Access from main.html -->
+    <script>
+        // Function to load project data from localStorage
+        function loadProjectData() {
+            try {
+                const projectData = JSON.parse(localStorage.getItem('projectData'));
+
+                if (projectData) {
+                    console.log('Project Data Loaded from main.html:', projectData);
+
+                    // Update window title with project name
+                    document.title = `${projectData.name} - Code Editor`;
+
+                    // Update the window title in titlebar
+                    const windowTitle = document.querySelector('.window-title');
+                    if (windowTitle) {
+                        windowTitle.textContent = `${projectData.name} - Code Editor`;
+                    }
+
+                    // Update current branch in status bar
+                    const currentBranch = document.getElementById('current-branch');
+                    if (currentBranch) {
+                        currentBranch.innerHTML = `<i class="fas fa-code-branch"></i> ${projectData.name}`;
+                    }
+
+                    // Log selected technologies to console
+                    console.log('Selected Languages:', projectData.languages);
+                    console.log('Selected Frameworks:', projectData.frameworks);
+                    console.log('Selected Libraries:', projectData.libraries);
+
+                    return projectData;
+                } else {
+                    console.log('No project data found in localStorage');
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error loading project data:', error);
+                return null;
+            }
+        }
+
+        // Load project data when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            // Wait a bit to ensure all other scripts are loaded
+            setTimeout(() => {
+                const projectData = loadProjectData();
+
+                // You can use projectData here to initialize your editor
+                // For example, create initial files based on selected technologies
+                if (projectData) {
+                    console.log('Project initialized:', projectData.name);
+
+                    // TRIGGER AI GENERATION
+                    window.api.generateEnvironment({
+                        name: projectData.name, // Pass project name
+                        languages: projectData.languages || [],
+                        packages: [...(projectData.frameworks || []), ...(projectData.libraries || [])],
+                        mode: projectData.mode || 'container', // Pass the selected mode
+                        customPath: projectData.customPath // Pass custom path
+                    }).then(result => {
+                        console.log("AI Generation Result:", result);
+                        if (window.vscode && window.vscode.showNotification) {
+                            if (result.success) {
+                                window.vscode.showNotification('AI Environment Generated Successfully', 'success');
+
+                                // Open the generated folder in the explorer
+                                if (result.data && result.data.targetDir) {
+                                    console.log("Opening generated folder:", result.data.targetDir);
+                                    window.vscode.openFolder(result.data.targetDir);
+                                }
+                            } else {
+                                window.vscode.showNotification('AI Generation Failed: ' + result.error, 'error');
+                            }
+                        }
+                    }).catch(err => {
+                        console.error("AI Generation Error:", err);
+                    });
+                }
+            }, 2000); // Wait 2s to ensure Terminal is ready
+        });
+    </script>
+</body>
+
+</html>

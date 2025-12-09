@@ -1,0 +1,10 @@
+{
+    "name": "envi-hack-root",
+    "version": "1.0.0",
+    "description": "Root package to run the VS Code Clone",
+    "scripts": {
+        "start": "npm start --prefix vscode"
+    },
+    "author": "",
+    "license": "ISC"
+}

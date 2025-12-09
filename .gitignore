@@ -1,0 +1,17 @@
+# Environment variables
+.env
+
+# Node
+node_modules/
+npm-debug.log
+
+# Python
+__pycache__/
+.venv/
+
+# Docker
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

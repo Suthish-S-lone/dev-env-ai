@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Setup Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #0a0a0f;
+            --secondary-bg: #11111f;
+            --accent-blue: #0066ff;
+            --accent-light: #3399ff;
+            --accent-glow: rgba(0, 102, 255, 0.5);
+            --text-color: #ffffff;
+            --text-secondary: #a0a0c0;
+            --border-radius: 8px;
+            --sparkle-color: rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 80, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 80, 255, 0.05) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Sparkle Effects */
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: var(--sparkle-color);
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px var(--sparkle-color);
+            animation: sparkle 3s infinite;
+            z-index: 1;
+        }
+
+        .sparkle:nth-child(1) {
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .sparkle:nth-child(2) {
+            top: 20%;
+            right: 20%;
+            animation-delay: 0.5s;
+        }
+
+        .sparkle:nth-child(3) {
+            bottom: 30%;
+            left: 10%;
+            animation-delay: 1s;
+        }
+
+        .sparkle:nth-child(4) {
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 1.5s;
+        }
+
+        .sparkle:nth-child(5) {
+            top: 40%;
+            left: 5%;
+            animation-delay: 2s;
+        }
+
+        /* Project Name Input */
+        .project-name-section {
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .project-name-section label {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .project-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 1.2rem 1.5rem;
+            background-color: var(--secondary-bg);
+            border: 2px solid transparent;
+            border-radius: var(--border-radius);
+            color: var(--text-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.2);
+        }
+
+        .project-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* Selection Groups */
+        .selection-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: slideUp 1s ease-out;
+        }
+
+        .selection-group {
+            background-color: var(--secondary-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .selection-group:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 102, 255, 0.2);
+            border-color: rgba(0, 102, 255, 0.4);
+        }
+
+        .group-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .group-title i {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-right: 0.8rem;
+        }
+
+        .group-title h2 {
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-item label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+            width: 100%;
+            padding: 0.5rem 0.3rem;
+            border-radius: 4px;
+        }
+
+        .checkbox-item label:hover {
+            color: var(--text-color);
+            background-color: rgba(0, 102, 255, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"]:checked+label {
+            color: var(--accent-light);
+            font-weight: 600;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 102, 255, 0.5);
+            border-radius: 4px;
+            margin-right: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked+label .custom-checkbox {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .custom-checkbox::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: white;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked+label .custom-checkbox::after {
+            opacity: 1;
+        }
+
+        /* Launch Button */
+        .launch-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .launch-btn {
+            background-color: transparent;
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 1.2rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .launch-btn:hover {
+            background-color: rgba(0, 102, 255, 0.1);
+            color: var(--accent-light);
+            box-shadow: 0 0 25px rgba(0, 102, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .launch-btn:active {
+            transform: translateY(1px);
+        }
+
+        .launch-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .launch-btn:hover::before {
+            left: 100%;
+        }
+
+        .launch-btn i {
+            margin-left: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .selection-groups {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .launch-btn {
+                padding: 1rem 2rem;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .project-input {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .selection-group {
+                padding: 1.2rem;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sparkle effects -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <div class="container">
+        <header class="header">
+            <h1>Project Setup</h1>
+            <p>Configure your development environment by selecting your preferred technologies</p>
+        </header>
+
+        <section class="project-name-section">
+            <label for="projectName">Project Name</label>
+            <input type="text" id="projectName" class="project-input" placeholder="Enter your project name">
+        </section>
+
+        <div class="selection-groups">
+            <!-- Languages Selection -->
+            <div class="selection-group">
+                <div class="group-title">
+                    <i class="fas fa-code"></i>
+                    <h2>Languages</h2>
+                </div>
+                <div class="checkbox-grid" id="languages">
+                    <!-- Languages checkboxes will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Frameworks Selection -->
+            <div class="selection-group">
+                <div class="group-title">
+                    <i class="fas fa-cogs"></i>
+                    <h2>Frameworks</h2>
+                </div>
+                <div class="checkbox-grid" id="frameworks">
+                    <!-- Frameworks checkboxes will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Libraries/Packages Selection -->
+            <div class="selection-group">
+                <div class="group-title">
+                    <i class="fas fa-box-open"></i>
+                    <h2>Libraries/Packages</h2>
+                </div>
+                <div class="checkbox-grid" id="libraries">
+                    <!-- Libraries checkboxes will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+
+
+        <section class="project-name-section" style="margin-bottom: 2rem;">
+            <label for="projectPath">Project Location</label>
+            <div style="display: flex; gap: 10px; width: 100%; max-width: 600px;">
+                <input type="text" id="projectPath" class="project-input" placeholder="Select a folder..." readonly
+                    style="flex: 1;">
+                <button id="browseBtn" class="project-input"
+                    style="width: auto; cursor: pointer; background: var(--accent-blue); color: white; font-weight: bold;">
+                    Browse
+                </button>
+            </div>
+        </section>
+
+        <div class="launch-section">
+            <button class="launch-btn" id="launchBtn">
+                Launch Environment <i class="fas fa-rocket"></i>
+            </button>
+        </div>
+
+        <footer class="footer">
+            <p>© 2023 DevSetup Pro | Modern Project Configuration Interface</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data for checkboxes
+        const languages = ['HTML', 'CSS', 'JavaScript', 'Python', 'C++', 'Java', 'TypeScript', 'Rust'];
+        const frameworks = ['React', 'Angular', 'Vue', 'Next.js', 'Django', 'Flask', 'Node.js', 'Express'];
+        const libraries = ['Tailwind CSS', 'Bootstrap', 'jQuery', 'NumPy', 'Pandas', 'TensorFlow', 'Three.js', 'Axios'];
+
+        // Function to create checkbox elements
+        function createCheckbox(id, name, label) {
+            const container = document.createElement('div');
+            container.className = 'checkbox-item';
+
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.id = id;
+            input.name = name;
+
+            const labelElem = document.createElement('label');
+            labelElem.htmlFor = id;
+
+            const customCheckbox = document.createElement('span');
+            customCheckbox.className = 'custom-checkbox';
+
+            const textSpan = document.createElement('span');
+            textSpan.textContent = label;
+
+            labelElem.appendChild(customCheckbox);
+            labelElem.appendChild(textSpan);
+            container.appendChild(input);
+            container.appendChild(labelElem);
+
+            return container;
+        }
+
+        // Populate checkboxes
+        function populateCheckboxes() {
+            const languagesContainer = document.getElementById('languages');
+            const frameworksContainer = document.getElementById('frameworks');
+            const librariesContainer = document.getElementById('libraries');
+
+            // Add languages
+            languages.forEach((lang, index) => {
+                const id = `lang-${index}`;
+                languagesContainer.appendChild(createCheckbox(id, 'languages', lang));
+            });
+
+            // Add frameworks
+            frameworks.forEach((framework, index) => {
+                const id = `framework-${index}`;
+                frameworksContainer.appendChild(createCheckbox(id, 'frameworks', framework));
+            });
+
+            // Add libraries
+            libraries.forEach((library, index) => {
+                const id = `library-${index}`;
+                librariesContainer.appendChild(createCheckbox(id, 'libraries', library));
+            });
+        }
+
+        // Initialize checkboxes
+        document.addEventListener('DOMContentLoaded', function () {
+            populateCheckboxes();
+
+            // Add click event to browse button
+            const browseBtn = document.getElementById('browseBtn');
+            const projectPathInput = document.getElementById('projectPath');
+
+            browseBtn.addEventListener('click', async function () {
+                if (window.api && window.api.openFolderDialog) {
+                    const paths = await window.api.openFolderDialog();
+                    if (paths && paths.length > 0) {
+                        projectPathInput.value = paths[0];
+                    }
+                } else {
+                    alert('File system access not available in this environment.');
+                }
+            });
+
+            // Add click event to launch button
+            const launchBtn = document.getElementById('launchBtn');
+            launchBtn.addEventListener('click', function () {
+                const projectName = document.getElementById('projectName').value;
+
+                // Validate project name
+                if (!projectName.trim()) {
+                    // Add shake animation to input
+                    const projectInput = document.getElementById('projectName');
+                    projectInput.style.borderColor = '#ff3366';
+                    projectInput.style.boxShadow = '0 0 15px rgba(255, 51, 102, 0.5)';
+
+                    // Reset after animation
+                    setTimeout(() => {
+                        projectInput.style.borderColor = '';
+                        projectInput.style.boxShadow = '';
+                    }, 1000);
+
+                    // Focus on input
+                    projectInput.focus();
+                    return;
+                }
+
+                // Validate at least one selection
+                const totalSelected = document.querySelectorAll('.checkbox-item input[type="checkbox"]:checked').length;
+
+                if (totalSelected === 0) {
+                    const selectionGroups = document.querySelector('.selection-groups');
+                    selectionGroups.style.borderColor = '#ff3366';
+                    selectionGroups.style.boxShadow = '0 0 15px rgba(255, 51, 102, 0.5)';
+
+                    // Shake animation
+                    selectionGroups.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
+
+                    // Add shake keyframes if not exists
+                    if (!document.getElementById('shake-style')) {
+                        const style = document.createElement('style');
+                        style.id = 'shake-style';
+                        style.textContent = `
+                            @keyframes shake {
+                                10%, 90% { transform: translate3d(-1px, 0, 0); }
+                                20%, 80% { transform: translate3d(2px, 0, 0); }
+                                30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+                                40%, 60% { transform: translate3d(4px, 0, 0); }
+                            }
+                         `;
+                        document.head.appendChild(style);
+                    }
+
+                    setTimeout(() => {
+                        selectionGroups.style.borderColor = '';
+                        selectionGroups.style.boxShadow = '';
+                        selectionGroups.style.animation = '';
+                    }, 1000);
+
+                    return;
+                }
+
+                // Create loading effect on button
+                launchBtn.innerHTML = 'Initializing... <i class="fas fa-spinner fa-spin"></i>';
+                launchBtn.disabled = true;
+
+                // Simulate processing delay
+                setTimeout(() => {
+                    // Get selected technologies
+                    const selectedLanguages = Array.from(document.querySelectorAll('#languages input:checked'))
+                        .map(cb => cb.nextElementSibling.querySelector('span:last-child').textContent);
+
+                    const selectedFrameworks = Array.from(document.querySelectorAll('#frameworks input:checked'))
+                        .map(cb => cb.nextElementSibling.querySelector('span:last-child').textContent);
+
+                    const selectedLibraries = Array.from(document.querySelectorAll('#libraries input:checked'))
+                        .map(cb => cb.nextElementSibling.querySelector('span:last-child').textContent);
+
+                    // Store the project data in localStorage to pass to index.html
+                    const projectData = {
+                        name: projectName,
+                        languages: selectedLanguages,
+                        frameworks: selectedFrameworks,
+                        libraries: selectedLibraries,
+                        mode: 'container', // Default to container mode
+                        customPath: document.getElementById('projectPath').value || null,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    localStorage.setItem('projectData', JSON.stringify(projectData));
+
+                    // Show success message briefly
+                    launchBtn.innerHTML = 'Environment Ready! <i class="fas fa-check"></i>';
+                    launchBtn.style.borderColor = '#33ff66';
+                    launchBtn.style.color = '#33ff66';
+                    launchBtn.style.boxShadow = '0 0 25px rgba(51, 255, 102, 0.5)';
+
+                    // Redirect to index.html (3rd page) after a brief delay
+                    setTimeout(() => {
+                        window.location.href = 'vscode/index.html';
+                    }, 1000);
+
+                }, 1500);
+            });
+
+            // Add random sparkles on mouse move
+            document.addEventListener('mousemove', function (e) {
+                // Occasionally create a sparkle at mouse position
+                if (Math.random() > 0.97) {
+                    createTemporarySparkle(e.clientX, e.clientY);
+                }
+            });
+
+            function createTemporarySparkle(x, y) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = `${x}px`;
+                sparkle.style.top = `${y}px`;
+                sparkle.style.position = 'fixed';
+                sparkle.style.animation = 'sparkle 1s forwards';
+
+                document.body.appendChild(sparkle);
+
+                // Remove sparkle after animation completes
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>

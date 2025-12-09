@@ -1,0 +1,23 @@
+{
+  "name": "dev-env-ai",
+  "version": "1.0.0",
+  "description": "Backend modules for DevSet (AI env generator + terminal manager)",
+  "main": "backend/test_generate.js",
+  "scripts": {
+    "start": "electron .",
+    "test:ai": "node backend/test_generate.js",
+    "test:pty": "node backend/test_terminal.js",
+    "test:ipc": "node backend/test_ipc.js",
+    "install:clean": "npm cache clean --force && rm -rf node_modules package-lock.json || rd /s /q node_modules & del package-lock.json || true"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "electron": "^39.2.4",
+    "node-fetch": "^3.3.2",
+    "node-pty": "^0.10.1",
+    "node-pyt": "^0.0.1-security"
+  },
+  "engines": {
+    "node": ">=16 <=20"
+  }
+}

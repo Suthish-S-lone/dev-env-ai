@@ -1,0 +1,9 @@
+{
+    "name": "hackathon-root",
+    "version": "1.0.0",
+    "description": "Root runner for Hackathon project",
+    "scripts": {
+        "start": "npm start --prefix \"Envi hack\"",
+        "install:all": "npm install --prefix \"Envi hack\" && npm install --prefix \"Envi hack/vscode\""
+    }
+}

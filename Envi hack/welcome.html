@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Development Environment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #05050D;
+            overflow: hidden;
+        }
+        
+        .cyber-font {
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff, 0 0 20px #0ff;
+        }
+        
+        .button-glow {
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .button-glow:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.9), 0 0 25px rgba(0, 255, 255, 0.7), 0 0 35px rgba(0, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 255, 0.03) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1;
+            animation: scan 8s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 #00ffff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); }
+            5% { clip: rect(73px, 9999px, 25px, 0); }
+            10% { clip: rect(2px, 9999px, 8px, 0); }
+            15% { clip: rect(14px, 9999px, 39px, 0); }
+            20% { clip: rect(37px, 9999px, 51px, 0); }
+            25% { clip: rect(61px, 9999px, 18px, 0); }
+            30% { clip: rect(82px, 9999px, 4px, 0); }
+            35% { clip: rect(17px, 9999px, 95px, 0); }
+            40% { clip: rect(44px, 9999px, 28px, 0); }
+            45% { clip: rect(66px, 9999px, 77px, 0); }
+            50% { clip: rect(92px, 9999px, 53px, 0); }
+            55% { clip: rect(5px, 9999px, 41px, 0); }
+            60% { clip: rect(23px, 9999px, 87px, 0); }
+            65% { clip: rect(79px, 9999px, 12px, 0); }
+            70% { clip: rect(48px, 9999px, 65px, 0); }
+            75% { clip: rect(11px, 9999px, 32px, 0); }
+            80% { clip: rect(85px, 9999px, 71px, 0); }
+            85% { clip: rect(57px, 9999px, 96px, 0); }
+            90% { clip: rect(3px, 9999px, 22px, 0); }
+            95% { clip: rect(68px, 9999px, 47px, 0); }
+            100% { clip: rect(26px, 9999px, 83px, 0); }
+        }
+        
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            5% { clip: rect(52px, 9999px, 74px, 0); }
+            10% { clip: rect(79px, 9999px, 85px, 0); }
+            15% { clip: rect(75px, 9999px, 5px, 0); }
+            20% { clip: rect(67px, 9999px, 61px, 0); }
+            25% { clip: rect(14px, 9999px, 79px, 0); }
+            30% { clip: rect(46px, 9999px, 34px, 0); }
+            35% { clip: rect(75px, 9999px, 57px, 0); }
+            40% { clip: rect(54px, 9999px, 60px, 0); }
+            45% { clip: rect(65px, 9999px, 68px, 0); }
+            50% { clip: rect(72px, 9999px, 34px, 0); }
+            55% { clip: rect(28px, 9999px, 17px, 0); }
+            60% { clip: rect(35px, 9999px, 53px, 0); }
+            65% { clip: rect(86px, 9999px, 40px, 0); }
+            70% { clip: rect(23px, 9999px, 76px, 0); }
+            75% { clip: rect(85px, 9999px, 29px, 0); }
+            80% { clip: rect(41px, 9999px, 12px, 0); }
+            85% { clip: rect(2px, 9999px, 39px, 0); }
+            90% { clip: rect(68px, 9999px, 55px, 0); }
+            95% { clip: rect(90px, 9999px, 8px, 0); }
+            100% { clip: rect(58px, 9999px, 90px, 0); }
+        }
+        
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+            background: rgba(5, 5, 13, 0.95);
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+    </style>
+</head>
+<body class="bg-[#05050D] text-white min-h-screen flex items-center justify-center relative">
+    <!-- Background Particles -->
+    <div id="particles-container" class="absolute inset-0 z-0"></div>
+    
+    <!-- Scan Lines Effect -->
+    <div class="scan-line"></div>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 z-10 relative">
+        <!-- Title -->
+        <h1 class="cyber-font text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-12 text-cyan-400 glitch" data-text="AI-POWERED AUTOMATED DEVELOPMENT ENVIRONMENT SETUP SYSTEM">
+            AI-POWERED AUTOMATED DEVELOPMENT ENVIRONMENT SETUP SYSTEM
+        </h1>
+        
+        <!-- Main Options -->
+        <div class="flex flex-col items-center justify-center space-y-12 mt-16">
+            <!-- SYSTEM SETUP Button -->
+            <button id="system-setup" class="cyber-font text-2xl md:text-3xl font-bold py-6 px-12 bg-transparent border-2 border-cyan-400 text-cyan-400 rounded-lg button-glow transition-all duration-300 hover:bg-cyan-400 hover:bg-opacity-10 uppercase tracking-wider">
+                SYSTEM SETUP
+            </button>
+            
+            <!-- CONTAINER SETUP Button -->
+            <button id="container-setup" class="cyber-font text-2xl md:text-3xl font-bold py-6 px-12 bg-transparent border-2 border-cyan-400 text-cyan-400 rounded-lg button-glow transition-all duration-300 hover:bg-cyan-400 hover:bg-opacity-10 uppercase tracking-wider">
+                CONTAINER SETUP
+            </button>
+        </div>
+        
+        <!-- Sub-Header -->
+        <h2 class="cyber-font text-xl md:text-2xl text-center mt-16 text-cyan-300 opacity-80">
+            SELECT YOUR CONFIGURATION
+        </h2>
+    </div>
+    
+    <!-- Message Box (Hidden by default) -->
+    <div id="message-box" class="message-box hidden fade-in">
+        <h3 class="cyber-font text-2xl text-cyan-400 mb-4">ACCESS RESTRICTED</h3>
+        <p class="text-lg mb-6">System configuration access restricted.</p>
+        <button id="close-message" class="cyber-font py-2 px-6 bg-transparent border border-cyan-400 text-cyan-400 rounded hover:bg-cyan-400 hover:bg-opacity-10 transition-colors duration-300">
+            CLOSE
+        </button>
+    </div>
+    
+    <script>
+        // Create background particles
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('absolute', 'rounded-full', 'bg-cyan-400');
+                
+                // Random size, position, and animation
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+                
+                // Add floating animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes float {
+                        0% { transform: translate(0, 0) rotate(0deg); opacity: ${Math.random() * 0.5 + 0.1}; }
+                        25% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(90deg); opacity: ${Math.random() * 0.5 + 0.1}; }
+                        50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg); opacity: ${Math.random() * 0.5 + 0.1}; }
+                        75% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(270deg); opacity: ${Math.random() * 0.5 + 0.1}; }
+                        100% { transform: translate(0, 0) rotate(360deg); opacity: ${Math.random() * 0.5 + 0.1}; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Button functionality
+        document.getElementById('system-setup').addEventListener('click', function() {
+            document.getElementById('message-box').classList.remove('hidden');
+        });
+        
+       document.getElementById('container-setup').addEventListener('click', function() {
+    // Navigate to the main.html container setup page
+    window.location.href = 'main.html';
+});
+        
+        document.getElementById('close-message').addEventListener('click', function() {
+            document.getElementById('message-box').classList.add('hidden');
+        });
+        
+        // Initialize particles when page loads
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>

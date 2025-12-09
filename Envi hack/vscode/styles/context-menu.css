@@ -1,0 +1,70 @@
+.context-menu {
+    position: fixed;
+    background: var(--menu-background);
+    border: 1px solid var(--menu-border);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 180px;
+    display: none;
+    overflow: hidden;
+}
+
+.context-menu.active {
+    display: block;
+}
+
+.context-menu-item {
+    padding: 4px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--menu-foreground);
+    user-select: none;
+    font-size: 13px;
+    height: 24px;
+}
+
+.context-menu-item:hover {
+    background: var(--menu-selectionBackground);
+    color: var(--menu-selectionForeground);
+}
+
+.context-menu-item.disabled {
+    color: var(--disabledForeground);
+    cursor: default;
+}
+
+.context-menu-item.disabled:hover {
+    background: transparent;
+}
+
+.context-menu-separator {
+    height: 1px;
+    background: var(--menu-separatorBackground);
+    margin: 4px 0;
+}
+
+.context-menu-shortcut {
+    color: var(--descriptionForeground);
+    font-size: 11px;
+    margin-left: 20px;
+}
+
+.context-menu-arrow {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--descriptionForeground);
+}
+
+.context-menu-submenu {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    display: none;
+}
+
+.context-menu-item:hover > .context-menu-submenu {
+    display: block;
+}
